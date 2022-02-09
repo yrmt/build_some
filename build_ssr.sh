@@ -32,8 +32,12 @@ git submodule update --init --recursive
 make install
 echo "ssr编译完成"
 
-
 mkdir -p /etc/shadowsocks
+pushd /etc/shadowsocks
+wget https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.3.1/v2ray-plugin-linux-amd64-v1.3.1.tar.gz /etc/shadowsocks
+tar -xvzf v2ray-plugin-linux-amd64-v1.3.1.tar.gz
+mv v2ray-plugin_linux_amd64 v2ray-plugin
+popd
 cat > /etc/shadowsocks/ssr.json << EOF
 {
         "server": "",
