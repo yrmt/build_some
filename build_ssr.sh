@@ -50,5 +50,6 @@ EOF
 
 echo "配置文件 /etc/shadowsocks/ssr.json"
 cat /etc/shadowsocks/ssr.json
-echo "启动命令: ss-local -c /etc/shadowsocks/ssr.json"
+echo "前台启动命令: ss-local -c /etc/shadowsocks/ssr.json"
+echo "后台启动命令: (sslocal -c /etc/shadowsocks/ssr.json > /var/log/shadowsock.log 2>&1 &) "
 echo "编译目录在 `pwd` 下注意清理"
