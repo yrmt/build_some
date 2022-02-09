@@ -33,9 +33,10 @@ make install
 echo "ssr编译完成"
 
 mkdir -p /etc/shadowsocks
-wget https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.3.1/v2ray-plugin-linux-amd64-v1.3.1.tar.gz
-tar -xvzf v2ray-plugin-linux-amd64-v1.3.1.tar.gz
+wget https://github.com/shadowsocks/v2ray-plugin/releases/download/v1.3.1/v2ray-plugin-linux-amd64-v1.3.1.tar.gz /etc/shadowsocks
+tar -xvzf v2ray-plugin-linux-amd64-v1.3.1.tar.gz 
 mv v2ray-plugin_linux_amd64 /etc/shadowsocks/v2ray-plugin
+
 cat > /etc/shadowsocks/ssr.json << EOF
 {
         "server": "",
@@ -48,8 +49,18 @@ cat > /etc/shadowsocks/ssr.json << EOF
 }
 EOF
 
+echo "安装 privoxy"
+yum install privoxy -y
+cat > /etc/privoxy/config << EOF
+listen-address  0.0.0.0:1081
+forward-socks5 / 127.0.0.1:1080 .
+EOF
+systemctl restart privoxy
+
 echo "配置文件 /etc/shadowsocks/ssr.json"
 cat /etc/shadowsocks/ssr.json
 echo "前台启动命令: ss-local -c /etc/shadowsocks/ssr.json"
-echo "后台启动命令: (sslocal -c /etc/shadowsocks/ssr.json > /var/log/shadowsock.log 2>&1 &) "
+echo "后台启动命令: (ss-local -c /etc/shadowsocks/ssr.json > /var/log/shadowsock.log 2>&1 &) "
 echo "编译目录在 `pwd` 下注意清理"
+echo "export http_proxy=http://127.0.0.1:1081"
+echo "export https_proxy=http://127.0.0.1:1081"
